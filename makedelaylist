@@ -30,19 +30,20 @@ QUIT
 
 int makevdlist(const char* curdat)
 {
-  float sw1,sw2,sw3;
+  /*float sw1,sw2,sw3;*/
   float inf2,inf3,in0,in10,nd0,nd10;
   float d0,d10;
   FILE *ifp,*ofp;
   int index1,index2;
   char line[PATH_MAX], vdpath[PATH_MAX], vdlistname[32];
+  char * message; 
 
   nd0=2.0;
   nd10=2.0;
 
-  FETCHPAR("SWH", &sw1);
+  /*FETCHPAR("SWH", &sw1);
   FETCHPAR1("SWH", &sw2);
-  FETCHPAR3("SWH", &sw3);
+  FETCHPAR3("SWH", &sw3);*/
   FETCHPAR1("IN_F", &inf2);
   FETCHPAR3("IN_F", &inf3);
 
@@ -54,9 +55,11 @@ int makevdlist(const char* curdat)
   in0=inf2/(nd0*1000000.0);
   in10=inf3/(nd10*1000000.0);
 
-  Proc_err(DEF_ERR_OPT,"in0: %.8f\tin10: %.8f",in0,in10);
+  message = malloc(200*sizeof(char));
+  sprintf(message,"Using nd0=nd10=2, the delay increments are:\nin0=%.8fs, in10=%.8fs\n\nPlease specify a name for the variable delay list:",in0,in10);
+  
   strncpy(vdlistname,"delays",32);
-  GETSTRING("Name of vdlist ",vdlistname);
+  GETSTRING(message,vdlistname);
   if (getParfileDirForWrite(vdlistname, VD_DIRS, vdpath) < 0)
     {
       Proc_err(DEF_ERR_OPT, "%s: %s", vdlistname, VD_DIRS);
