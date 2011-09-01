@@ -1,0 +1,32 @@
+java -jar ~shyberts/bin/PoissonGap.jar
+
+click on "File" at the top, select "FileSelect" from the menu, and make up a filename. 
+
+enter values into the 2D section:
+
+-xN 56 SW 8049.537 t2 0.1 3.14
+-yN 200 SW 8002.838 t2 0.1 3.14
+
+! set obt manually to the number of points you want to collect !
+
+in this case, 0.25*56*200 = 2800
+
+hit Eexecute
+
+generated Poisson_56_200_25%
+also generated Poisson_56_200_30%
+
+visualize these schedules:
+oocalc Poisson_56_200_25%
+       columns separated by space
+       select columns A & B, insert chart, scatter plot
+
+Keep the 0 0 first point, but randomize the rest of the schedule:
+
+head -1 Poisson_56x200_30% > Random_Poisson_56x200_30%
+sort --random-sort Poisson_56x200_30% | grep -v "^0 0" >> Random_Poisson_56x200_30%
+
+generate vclist and vdlist:
+
+./sched2lists.py -s 8049.537 8002.838 -m 56 200 -n 2 -i Random_Poisson_56x200_30% -o KE_RP_56x200_30%
+

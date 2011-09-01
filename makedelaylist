@@ -1,0 +1,91 @@
+/*** ^^A -*-C++-*- **********************************************/
+/*	makevdlist	18.05.2000				*/
+/****************************************************************/
+/*	Short Description :					*/
+/*	makes vdlist and vclist from a sampling schedule       	*/
+/****************************************************************/
+/*	Keywords :						*/
+/*	nonuniform sampling					*/
+/****************************************************************/
+/*	Description/Usage :					*/
+/*	xau makevdlist			*/
+/****************************************************************/
+/*	Author(s) :						*/
+/*	Name		: Katie Edmonds 			*/
+/*	Organisation	: Harvard Medical School       		*/
+/*	Email		: katie.edmonds@gmail.com		*/
+/****************************************************************/
+/*	Name		Date	Modification:			*/
+/*	kae		110831	created				*/
+/****************************************************************/
+/*
+$Id: makevdlist,v 0.1 2011/08/31 $
+*/
+
+AUERR = makevdlist(curdat);
+QUIT
+
+
+/*#include <stdio.h>*/
+
+int makevdlist(const char* curdat)
+{
+  float sw1,sw2,sw3;
+  float inf2,inf3,in0,in10,nd0,nd10;
+  float d0,d10;
+  FILE *ifp,*ofp;
+  int index1,index2;
+  char line[PATH_MAX], vdpath[PATH_MAX], vdlistname[32];
+
+  nd0=2.0;
+  nd10=2.0;
+
+  FETCHPAR("SWH", &sw1);
+  FETCHPAR1("SWH", &sw2);
+  FETCHPAR3("SWH", &sw3);
+  FETCHPAR1("IN_F", &inf2);
+  FETCHPAR3("IN_F", &inf3);
+
+  /* Calculate the delay increment based on nd0 (number of times d0 would
+     appear in each scan of the pulse sequence). The factor of 1,000,000
+     corrects for the fact that inf1 and inf2 are expressed in microseconds,
+     while the incremented delay is expressed in seconds. */
+
+  in0=inf2/(nd0*1000000.0);
+  in10=inf3/(nd10*1000000.0);
+
+  Proc_err(DEF_ERR_OPT,"in0: %.8f\tin10: %.8f",in0,in10);
+  strncpy(vdlistname,"delays",32);
+  GETSTRING("Name of vdlist ",vdlistname);
+  if (getParfileDirForWrite(vdlistname, VD_DIRS, vdpath) < 0)
+    {
+      Proc_err(DEF_ERR_OPT, "%s: %s", vdlistname, VD_DIRS);
+      ABORT;
+    }
+
+  if ((ofp = fopen(vdpath, "wt")) == 0)
+    {
+      Proc_err(DEF_ERR_OPT, "Cannot open file for writing:\n%s", vdpath);
+      ABORT;
+    }
+
+  ifp=fopen("/opt/topspin3.1/data/katie/nmr/b800-13Cnoesy/7/complete", "r");
+  /*ofp=fopen("/opt/topspin3.1/data/katie/nmr/b800-13Cnoesy/7/complete_delays","w");*/
+  if (ifp == NULL){
+    Proc_err(DEF_ERR_OPT,"Can't open input file.");
+    exit(1);
+  }
+
+  /*fprintf(ofp,"%.8f %.8f\n",in0,in10);*/
+  while (fgets(line,sizeof(line),ifp) != NULL) {
+    sscanf(line,"%d %d",&index1,&index2);
+    d0=in0*index1;
+    d10=in10*index2;
+    fprintf(ofp,"%.7f\n%.7f\n", d0,d10);
+  }
+  fclose(ifp);
+  fclose(ofp);
+
+
+  return 0;
+}
