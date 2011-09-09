@@ -26,6 +26,11 @@ Keep the 0 0 first point, but randomize the rest of the schedule:
 head -1 Poisson_56x200_30% > Random_Poisson_56x200_30%
 sort --random-sort Poisson_56x200_30% | grep -v "^0 0" >> Random_Poisson_56x200_30%
 
+realize that the schedule is in the wrong order, so reverse the columns:
+awk '{print $2, $1}' Random_Poisson_56x200_30% > Random_Poisson_200x56_30%
+
+The vdlist and vclist filenames must have fewer than 32 characters, so beware with overly descriptive titles.
+
 generate vclist and vdlist:
 
 ./sched2lists.py -s 8049.537 8002.838 -m 56 200 -n 2 -i Random_Poisson_56x200_30% -o KE_RP_56x200_30%
