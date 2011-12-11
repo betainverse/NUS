@@ -19,7 +19,7 @@ def write_delays_and_phases(basename,pointlines,increments):
         delays = map(lambda x,y: x*int(y), increments, line.split())
         phases = [1+(int(x)%2) for x in line.split()]
         for delay in delays:
-            opendelays.write('%.6f\n'%delay)
+            opendelays.write('%.8f\n'%delay)
         for phase in phases:
             openphases.write('%d\n'%phase)
     opendelays.close()
