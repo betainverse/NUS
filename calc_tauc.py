@@ -70,10 +70,10 @@ def calcTauC(molwt,T):
 #    TK = T+273.15
 #    print mw,T,calcTauC(mw,TK)
 
-mws = range(10000,62000,2000)
+mws = range(10000,65000,5000)
 print 'T / mw\t'+'\t'.join([str(mw) for mw in mws])
 
-for T in range(10,40,5):
+for T in range(20,50,5):
     TK = T+273.15
     taucs = [calcTauC(mw,TK) for mw in mws]
     print '%d\t'%T+'\t'.join(['%0.3f'%tauc for tauc in taucs])
