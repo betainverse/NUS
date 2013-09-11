@@ -66,12 +66,17 @@ def calcTauC(molwt,T):
 #print getvisc(273+30)
 #print getvisc(313.15)
 
-for mw in range(10000,62000,2000):
-    for T in range(10,40,5):
-        TK = T+273.15
-        print mw,T,calcTauC(mw,TK)
+#for T in range(10,40,5):
+#    TK = T+273.15
+#    print mw,T,calcTauC(mw,TK)
 
+mws = range(10000,62000,2000)
+print 'T / mw\t'+'\t'.join([str(mw) for mw in mws])
 
+for T in range(10,40,5):
+    TK = T+273.15
+    taucs = [calcTauC(mw,TK) for mw in mws]
+    print '%d\t'%T+'\t'.join(['%0.3f'%tauc for tauc in taucs])
 
 
 
