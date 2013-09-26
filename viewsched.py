@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 """
 Read in a nonuniform sampling schedule.
 Output a graph depicting that schedule.
