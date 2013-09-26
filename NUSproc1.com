@@ -46,8 +46,8 @@ rm -rf xyz
 
 xyz2pipe -in data/test%03d.fid -x \
 | nmrPipe -fn SOL \
-| nmrPipe  -fn SP -off 0.5 -end 0.98 -pow 1 -c 1.0 -size 350 \
-| nmrPipe  -fn ZF -size 2048                          \
+| nmrPipe  -fn SP -off 0.5 -end 0.98 -pow 1 -c 1.0 \
+| nmrPipe  -fn ZF -auto                          \
 | nmrPipe  -fn FT -verb                             \
 | nmrPipe  -fn PS -p0 0.0  -p1 0.0 -di              \
 | nmrPipe  -fn EXT -left -sw           \

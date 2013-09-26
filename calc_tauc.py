@@ -51,7 +51,7 @@ def getvisc(T):
     rhs2= rhs+math.log(muo)
     return math.e**rhs2
 #    return visc[10*int(round((T-273)/10))]
-
+#http://www-mdp.eng.cam.ac.uk/web/library/enginfo/aerothermal_dvd_only/aero/fprops/propsoffluids/node5.html
 
 def calcTauC(molwt,T):
     pi=math.pi
@@ -70,15 +70,17 @@ def calcTauC(molwt,T):
 #    TK = T+273.15
 #    print mw,T,calcTauC(mw,TK)
 
-mws = range(10000,65000,5000)
-print 'T / mw\t'+'\t'.join([str(mw) for mw in mws])
+#mws = range(10000,65000,5000)
+#print 'T / mw\t'+'\t'.join([str(mw) for mw in mws])
 
-for T in range(20,50,5):
+#for T in range(20,50,5):
+#    TK = T+273.15
+#    taucs = [calcTauC(mw,TK) for mw in mws]
+#    print '%d\t'%T+'\t'.join(['%0.3f'%tauc for tauc in taucs])
+
+for T in range(20,100,10):
     TK = T+273.15
-    taucs = [calcTauC(mw,TK) for mw in mws]
-    print '%d\t'%T+'\t'.join(['%0.3f'%tauc for tauc in taucs])
-
-
+    print T, '\t', getvisc(TK)*1000
 
 
 
